@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Player with Lyrics & Song Selection</title>
     <style>
-        body {
+        .line5{
             font-family: Arial, sans-serif;
             text-align: center;
             background-color: #314134;
             color: white;
-            margin: 50px;
+            margin: 4%;
+            border-radius: 10px;
+            width: 92%;
         }
         .player {
             background: #444;
@@ -55,7 +57,8 @@
     </style>
 </head>
 <body>
-
+<div class="line5">
+    <br>
     <h2>Quran Player</h2>
 
     <!-- Song Selector -->
@@ -63,8 +66,7 @@
     <select id="song-selector" onchange="selectSong()">
         <option value="0">fatiha</option>
         <option value="1">baqarah</option>
-        <option value="2">Song 3</option>
-    </select>
+    </select><br><br>
 
     <div class="player">
         <p id="song-title"></p>
@@ -85,13 +87,13 @@
     <div id="lyrics">
         <p id="song-lyrics">Lyrics will appear here...</p>
     </div>
-
+</div>
     <script>
         let songs = [
-            { title: "fatiha", src: "fatiha.mp3", lyrics:
+            { title: "Surah Al-fatihah", src: "fatiha.mp3", lyrics:
                 "Bismillāhi r-raḥmāni r-raḥīm\nAl-ḥamdu lillāhi rabbi l-'ālamīn\nAr-raḥmāni r-raḥīm\nMāliki yawmi d-dīn\nIyyāka na'budu wa iyyāka nasta'īn\nIhdinā ṣ-ṣirāṭ al-mustaqīm\nṢirāṭ al-ladhīna an'amta 'alayhim\nGhayri l-maghḍūbi 'alayhim walā ḍ-ḍāllīn"
             },
-            { title: "Death calling......", src: "n1.mp3", lyrics: 
+            { title: "Surah Al-Baqarah", src: "baqarah.mp3", lyrics: 
             "...." }
         ];
 
