@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player with Lyrics & Song Selection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #314134;
+            color: white;
+            margin: 50px;
+        }
+        .player {
+            background: #444;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            width: 300px;
+        }
+        button, select {
+            background: #00ba0f;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover, select:hover {
+            background: #007319;
+        }
+        #progress-container {
+            width: 100%;
+            background: #555555;
+            border-radius: 5px;
+            cursor: pointer;
+            height: 8px;
+            margin: 10px 0;
+        }
+        #progress {
+            width: 0%;
+            height: 100%;
+            background: #00ff37;
+            border-radius: 5px;
+        }
+        #lyrics {
+            background: #333333;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Quran Player</h2>
+
+    <!-- Song Selector -->
+    <label for="song-selector"></label>
+    <select id="song-selector" onchange="selectSong()">
+        <option value="0">fatiha</option>
+        <option value="1">baqarah</option>
+        <option value="2">Song 3</option>
+    </select>
+
+    <div class="player">
+        <p id="song-title"></p>
+        <audio id="audio-player"></audio>
+        
+        <!-- Progress Bar -->
+        <div id="progress-container" onclick="seek(event)">
+            <div id="progress"></div>
+        </div>
+
+        <button onclick="prevSong()">Previous</button>
+        <button onclick="playPause()">Play/Pause</button>
+        <button onclick="nextSong()">Next</button>
+        <button onclick="toggleRepeat()">🔂</button>
+    </div>
+
+    <!-- Lyrics Section -->
+    <div id="lyrics">
+        <p id="song-lyrics">Lyrics will appear here...</p>
+    </div>
+
+    <script>
+        let songs = [
+            { title: "fatiha", src: "fatiha.mp3", lyrics:
+                "Bismillāhi r-raḥmāni r-raḥīm\nAl-ḥamdu lillāhi rabbi l-'ālamīn\nAr-raḥmāni r-raḥīm\nMāliki yawmi d-dīn\nIyyāka na'budu wa iyyāka nasta'īn\nIhdinā ṣ-ṣirāṭ al-mustaqīm\nṢirāṭ al-ladhīna an'amta 'alayhim\nGhayri l-maghḍūbi 'alayhim walā ḍ-ḍāllīn"
+            },
+            { title: "Death calling......", src: "n1.mp3", lyrics: 
+            "...." }
+        ];
+
+        let currentIndex = 0;
+        let audio = document.getElementById("audio-player");
+        let title = document.getElementById("song-title");
+        let lyrics = document.getElementById("song-lyrics");
+        let progressBar = document.getElementById("progress");
+        let songSelector = document.getElementById("song-selector");
+        let isRepeating = false;
+
+        // Load the first song
+        function loadSong() {
+            audio.src = songs[currentIndex].src;
+            title.innerText = "Now Playing: " + songs[currentIndex].title;
+            lyrics.innerText = songs[currentIndex].lyrics;
+            songSelector.value = currentIndex;
+            audio.play();
+        }
+        loadSong();
+
+        function playPause() {
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        }
+
+        function nextSong() {
+            currentIndex = (currentIndex + 1) % songs.length;
+            loadSong();
+        }
+
+        function prevSong() {
+            currentIndex = (currentIndex - 1 + songs.length) % songs.length;
+            loadSong();
+        }
+        function toggleRepeat() {
+            isRepeating = !isRepeating;
+            audio.loop = isRepeating;
+            alert("Repeat is " + (isRepeating ? "ON" : "OFF"));
+        }
+
+        // Automatically play the next song when the current song ends
+        audio.addEventListener("ended", () => {
+            if (!isRepeating) nextSong();
+        });
+
+        // Update the progress bar
+        audio.addEventListener("timeupdate", () => {
+            let progressPercent = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = progressPercent + "%";
+        });
+
+        // Seek through the progress bar
+        function seek(event) {
+            let progressContainer = document.getElementById("progress-container");
+            let clickPosition = event.offsetX / progressContainer.offsetWidth;
+            audio.currentTime = clickPosition * audio.duration;
+        }
+
+        // Change song based on selection
+        function selectSong() {
+            currentIndex = parseInt(songSelector.value);
+            loadSong();
+        }
+    </script>
+
+</body>
+</html>
